@@ -7,7 +7,7 @@ import Table from "./Component/Table";
 import { AiOutlineLineChart } from "react-icons/ai";
 import SpinnerTool from "./tools/Spinner/SpinnerTool";
 import LightChart from "./Component/LightChart";
-import LightChartJs from "./Component/LightChartJs";
+import News from "./Component/News";
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -77,6 +77,7 @@ const App = () => {
           setIsLoading={setIsLoading}
           setInitQuoteSpark={setInitQuoteSpark}
         />
+        <News />
 
         {quoteSummary && quoteSpark ? (
           <div>
@@ -86,7 +87,6 @@ const App = () => {
               setRangeChart={setRangeChart}
               quoteSummary={quoteSummary}
             />
-            {/* <LightChartJs /> */}
 
             <Table
               quoteSummary={quoteSummary}
