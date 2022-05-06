@@ -1,0 +1,14 @@
+.coin-table {
+  overflow-x: auto;
+
+  tbody {
+    tr {
+      height: 60px;
+      vertical-align: middle;
+    }
+
+    tr:hover {
+      background: rgba(128, 128, 128, 0.1);
+    }
+  }
+}

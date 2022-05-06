@@ -1,104 +1,54 @@
-import React, { useState, useEffect } from "react";
-import { yahooFinApi } from "./API/yahooFinApi";
-import Chart from "./Component/Chart";
-import Navbar from "./Component/Navbar";
-import Overview from "./Component/Overview";
-import Table from "./Component/Table";
-import { AiOutlineLineChart } from "react-icons/ai";
-import SpinnerTool from "./tools/Spinner/SpinnerTool";
-import LightChart from "./Component/LightChart";
-import News from "./Component/News";
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import MainLayout from "./Layout/MainLayout";
+import CryptoMarket from "./Pages/Crypto/CryptoMarket";
+import RecentlyAdded from "./Pages/Crypto/RecentlyAdded";
+import Exchange from "./Pages/Exchange/Exchange";
+import Home from "./Pages/Home";
+import Knowledge from "./Pages/Knowledge/Knowledge";
+import NFT from "./Pages/NFT/NFT";
+import Product from "./Pages/Product/Product";
+import NotFound from "./Pages/NotFound";
+import LargeMove from "./Pages/Crypto/LargeMove";
+import Spot from "./Pages/Exchange/Spot";
+import Delivatives from "./Pages/Exchange/Delivatives";
+import RelatedCoin from "./Pages/NFT/RelatedCoin";
+import TopSales from "./Pages/NFT/TopSales";
+import MarketPlace from "./Pages/NFT/MarketPlace";
+import CryptoBasics from "./Pages/Knowledge/CryotoBasics";
+import TipsTutorials from "./Pages/Knowledge/TipsTutorials";
+import Store from "./Pages/Product/Store";
 
 const App = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [quoteSummary, setQuoteSummary] = useState("");
-  const [quoteSpark, setQuoteSpark] = useState("");
-  const [initQuoteSpark, setInitQuoteSpark] = useState("");
-  const [rangeChart, setRangeChart] = useState("3y");
-  const [fairValue, setFairValue] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  const styles = {
-    exampleImg: {
-      paddingTop: "20px",
-      filter: "blur(2px)",
-      maxHeight: "95vh",
-    },
-  };
-
-  const fetchChartData = () => {
-    setIsLoading(true);
-    yahooFinApi
-      .get(
-        `/v8/finance/spark?interval=1d&range=${rangeChart}&symbols=${searchTerm.toLowerCase()}.BK`
-      )
-      .then((res) => {
-        const firstObj = res.data[Object.keys(res.data)[0]];
-        setQuoteSpark(firstObj);
-      })
-      .catch((err) => {
-        console.log("err", err.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    if (searchTerm) fetchChartData();
-  }, [rangeChart, quoteSummary]);
-
-  const displayBlank = (
-    <div className="text-center border py-5 " style={{ height: "500px" }}>
-      <AiOutlineLineChart size="20em" style={{ color: "rgba(0,0,0,0.5)" }} />
-      <h2 style={{ color: "rgba(0,0,0,0.5)" }}>กรุณาเลือกหุ้น</h2>
-    </div>
-  );
-
-  const displayExample = (
-    <div>
-      <img
-        src="/assets/img/overview2.png"
-        alt="overview"
-        className="w-100"
-        style={styles.exampleImg}
-      />
-    </div>
-  );
-
   return (
-    <div className="">
-      {isLoading && <SpinnerTool />}
-      <div className="container position-relative" style={{ height: "97vh" }}>
-        <Navbar
-          setQuoteSummary={setQuoteSummary}
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          setIsLoading={setIsLoading}
-          setInitQuoteSpark={setInitQuoteSpark}
+    <Routes>
+      <Route path="/" element={<MainLayout />}>
+        <Route path="/" element={<CryptoMarket />} />
+        <Route path="recently_added" element={<RecentlyAdded />} />
+        <Route path="large_move" element={<LargeMove />} />
+
+        <Route path="exchange" element={<Exchange />} />
+        <Route path="exchange/spot" element={<Spot />} />
+        <Route path="exchange/dex/delivatives" element={<Delivatives />} />
+
+        <Route path="nft" element={<NFT />} />
+        <Route path="nft/related_coin" element={<RelatedCoin />} />
+        <Route path="nft/top_sales" element={<TopSales />} />
+        <Route path="nft/market_place" element={<MarketPlace />} />
+
+        <Route path="knowledge" element={<Knowledge />} />
+
+        <Route path="knowledge/crypto_basics" element={<CryptoBasics />} />
+        <Route
+          path="knowledge/tips_and_tutorials"
+          element={<TipsTutorials />}
         />
-        <News />
 
-        {quoteSummary && quoteSpark ? (
-          <div>
-            <Overview quoteSummary={quoteSummary} fairValue={fairValue} />
-            <LightChart
-              quoteSpark={quoteSpark}
-              setRangeChart={setRangeChart}
-              quoteSummary={quoteSummary}
-            />
-
-            <Table
-              quoteSummary={quoteSummary}
-              initQuoteSpark={initQuoteSpark}
-              setFairValue={setFairValue}
-            />
-          </div>
-        ) : (
-          displayExample
-        )}
-      </div>
-    </div>
+        <Route path="product" element={<Product />} />
+        <Route path="product/store" element={<Store />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
   );
 };
 
