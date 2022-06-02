@@ -1,6 +1,7 @@
 {
   "name": "coindy",
   "version": "0.1.0",
+  "homepage": "https://NarutSH.github.io/coinwakeup",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
@@ -11,9 +12,11 @@
     "chart.js": "^3.5.1",
     "chartjs-plugin-annotation": "^1.0.2",
     "chartjs-plugin-zoom": "^1.1.1",
+    "gh-pages": "^4.0.0",
     "kaktana-react-lightweight-charts": "^2.0.0",
     "lightweight-charts": "^3.7.0",
     "lodash": "^4.17.21",
+    "node-sass": "^6.0.1",
     "react": "^17.0.2",
     "react-chartjs-2": "^3.0.5",
     "react-dom": "^17.0.2",
@@ -30,7 +33,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

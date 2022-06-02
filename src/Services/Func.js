@@ -15,3 +15,7 @@ export const convertCompactNumber = (number) => {
 
   return formatter.format(number);
 };
+
+export const convertToOneDigit = (number) => {
+  return Math.round(+number * 10) / 10;
+};

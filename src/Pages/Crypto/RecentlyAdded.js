@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { coinApi } from "../../api/coinApi";
-import { convertCurrency } from "../../Services/Func";
+import { convertCurrency, convertToOneDigit } from "../../Services/Func";
 import scrapeIt from "scrape-it";
-import { log } from "react-modal/lib/helpers/ariaAppHider";
 
 const RecentlyAdded = () => {
   const [coinList, setCoinList] = useState([]);
   const [recentlyAddedCoin, setRecentlyAddedCoin] = useState([]);
 
   const styles = {
-    change24h: (price) => {
+    setColorChange: (price) => {
       let colorText = "inherit";
 
-      if (price < 0) {
+      if (+price < 0) {
         colorText = "red";
-      } else if (price > 0) {
+      } else if (+price > 0) {
         colorText = "green";
       }
 
@@ -35,23 +34,8 @@ const RecentlyAdded = () => {
       });
   };
 
-  const fetchCoinById = async (id) => {
-    const res = await coinApi.get(`/coins/${id}`, {
-      params: {
-        localization: false,
-        tickers: false,
-        market_data: true,
-        community_data: false,
-        developer_data: false,
-        sparkline: false,
-      },
-    });
-
-    return res.data;
-  };
-
   const getScrape = () => {
-    scrapeIt("https://www.coingecko.com/en/coins/recently_added", {
+    scrapeIt("https://www.coingecko.com/en/new-cryptocurrencies", {
       posts: {
         listItem: "tr",
         data: {
@@ -74,6 +58,21 @@ const RecentlyAdded = () => {
             attr: "data-sort",
           },
           volume24: "td.td-liquidity_score>span",
+
+          chainAddress: {
+            selector: ".dropdown-menu >div > i",
+            attr: "data-address",
+          },
+
+          chaninImg: {
+            selector: ".dropdown-menu >div>div > img",
+            attr: "src",
+          },
+
+          chaninName: {
+            selector: ".dropdown-menu > div >div > div > span",
+            how: "html",
+          },
 
           price: "td.td-price.price.text-right.pl-0>span.no-wrap",
           image: {
@@ -103,12 +102,6 @@ const RecentlyAdded = () => {
     getScrape();
   }, []);
 
-  useEffect(() => {
-    fetchCoinById("dogger").then((res) => {
-      console.log({ res });
-    });
-  }, []);
-
   const displayTable = (
     <div>
       <div className="coin-table">
@@ -117,7 +110,7 @@ const RecentlyAdded = () => {
             <tr>
               <th></th>
               <th>Coin</th>
-              <th></th>
+              <th>Symbol</th>
               <th>Price</th>
               <th>Chain</th>
               <th>1h</th>
@@ -128,9 +121,13 @@ const RecentlyAdded = () => {
           </thead>
           <tbody>
             {recentlyAddedCoin?.map((item, index) => {
+              const getPrice = item.price
+                .replaceAll("$", "")
+                .replaceAll(",", "");
+
               return (
                 <tr key={index}>
-                  <td></td>
+                  <td>{index + 1}</td>
                   <td>
                     <img
                       src={item.image}
@@ -141,10 +138,22 @@ const RecentlyAdded = () => {
                     {item.title}
                   </td>
                   <td>{item.id}</td>
-                  <td>{item.price}</td>
-                  <td>{item.price}</td>
-                  <td>{item.change1h}</td>
-                  <td>{item.change24h}</td>
+                  <td>{convertCurrency(getPrice)}</td>
+                  <td>
+                    <img
+                      src={item.chaninImg}
+                      width="25px"
+                      alt={item.chaninName}
+                      className="rounded-circle me-2"
+                    />
+                    {item.chaninName}
+                  </td>
+                  <td style={styles.setColorChange(item.change1h)}>
+                    {convertToOneDigit(item.change1h)}%
+                  </td>
+                  <td style={styles.setColorChange(item.change24h)}>
+                    {convertToOneDigit(item.change24h)}%
+                  </td>
                   <td>{item.volume24}</td>
                   <td>{item.lastAdded}</td>
                   <td></td>
@@ -165,28 +174,3 @@ const RecentlyAdded = () => {
 };
 
 export default RecentlyAdded;
-
-{
-  /* <tr key={index}>
-<td></td>
-<td>
-  <img
-    src={item.image}
-    width="25px"
-    alt={item.symbol}
-    className="rounded-circle me-2"
-  />
-  {item.name}
-</td>
-<td>{item.symbol}</td>
-<td>{convertCurrency(item.current_price)}</td>
-<td></td>
-<td></td>
-<td style={styles.change24h(item.price_change_24h)}>
-  {convertCurrency(item.price_change_24h)}
-</td>
-<td>{convertCurrency(item.total_volume)}</td>
-<td>1 hour</td>
-<td></td>
-</tr> */
-}

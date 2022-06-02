@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { coinApi } from "../../api/coinApi";
-import { convertCurrency } from "../../Services/Func";
+import { convertCurrency, convertToOneDigit } from "../../Services/Func";
 
 const LargeMove = () => {
   const [coinList, setCoinList] = useState([]);
+  const [topGainer, setTopGainer] = useState([]);
+  const [topLoser, setTopLoser] = useState([]);
 
   const styles = {
     change24h: (price) => {
@@ -25,8 +27,20 @@ const LargeMove = () => {
     coinApi
       .get("/coins/markets", { params: { vs_currency: "usd" } })
       .then((res) => {
-        console.log(res);
-        setCoinList(res.data);
+        console.log(res.data);
+        const list = [...res.data];
+        const listGainer = [...list].sort(
+          (a, b) =>
+            b.price_change_percentage_24h - a.price_change_percentage_24h
+        );
+        const listLoser = [...list].sort(
+          (a, b) =>
+            a.price_change_percentage_24h - b.price_change_percentage_24h
+        );
+
+        setCoinList(list);
+        setTopGainer(listGainer);
+        setTopLoser(listLoser);
       })
       .catch((err) => {
         console.log(err);
@@ -48,14 +62,14 @@ const LargeMove = () => {
               <th>Coin</th>
               <th>Price</th>
               <th>24h Volume</th>
-              <th>24h</th>
+              <th>24h Change %</th>
             </tr>
           </thead>
           <tbody>
-            {coinList?.map((item, index) => {
+            {topGainer?.map((item, index) => {
               return (
                 <tr key={index}>
-                  <td></td>
+                  <td>{index + 1}</td>
                   <td className="d-flex align-items-center">
                     <span>
                       <img
@@ -73,8 +87,10 @@ const LargeMove = () => {
 
                   <td>{convertCurrency(item.current_price)}</td>
                   <td>{item.total_volume}</td>
-                  <td style={styles.change24h(item.price_change_24h)}>
-                    {convertCurrency(item.price_change_24h)}
+                  <td
+                    style={styles.change24h(item.price_change_percentage_24h)}
+                  >
+                    {convertToOneDigit(item.price_change_percentage_24h)}%
                   </td>
                 </tr>
               );
@@ -100,10 +116,10 @@ const LargeMove = () => {
             </tr>
           </thead>
           <tbody>
-            {coinList?.map((item, index) => {
+            {topLoser?.map((item, index) => {
               return (
                 <tr key={index}>
-                  <td></td>
+                  <td>{index + 1}</td>
                   <td className="d-flex align-items-center">
                     <span>
                       <img
@@ -121,8 +137,10 @@ const LargeMove = () => {
 
                   <td>{convertCurrency(item.current_price)}</td>
                   <td>{item.total_volume}</td>
-                  <td style={styles.change24h(item.price_change_24h)}>
-                    $ {item.price_change_24h}
+                  <td
+                    style={styles.change24h(item.price_change_percentage_24h)}
+                  >
+                    {convertToOneDigit(item.price_change_percentage_24h)}%
                   </td>
                 </tr>
               );
@@ -134,7 +152,7 @@ const LargeMove = () => {
   );
 
   return (
-    <div className="container-fluid">
+    <div className="container">
       <h1 className=" my-4">Cryptocurrency Movers</h1>
       <div className="row row-cols-1 row-cols-lg-2 my-4">
         <div className="col ">{displayWinners}</div>

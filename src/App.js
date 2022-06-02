@@ -29,7 +29,7 @@ const App = () => {
 
         <Route path="exchange" element={<Exchange />} />
         <Route path="exchange/spot" element={<Spot />} />
-        <Route path="exchange/dex/delivatives" element={<Delivatives />} />
+        <Route path="exchange/delivatives" element={<Delivatives />} />
 
         <Route path="nft" element={<NFT />} />
         <Route path="nft/related_coin" element={<RelatedCoin />} />

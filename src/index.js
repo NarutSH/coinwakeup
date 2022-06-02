@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
+import "./Scss/index.scss";
 import App from "./App";
 import { ToastProvider } from "react-toast-notifications";
 import Modal from "react-modal";

@@ -5,7 +5,10 @@ import { convertCurrency } from "../Services/Func";
 const ExchangeCard = ({ exchange }) => {
   const { name, image, id, trade_volume_24h_btc } = exchange;
   return (
-    <div className="card m-auto shadow" style={{ width: "400px" }}>
+    <div
+      className="card m-auto shadow"
+      style={{ width: "100%", maxWidth: "400px" }}
+    >
       <div className="card-body">
         <div className="row">
           <div className="col-3">

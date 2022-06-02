@@ -132,7 +132,7 @@ const Header = () => {
     <div className="navbar px-5 border flex-nowrap">
       <div className="d-flex align-items-center">
         <Link to="/" style={styles.list} className="me-3">
-          <img src="/assets/images/logo1.png" />
+          <img src="/assets/images/logo1.png" width="200px" />
         </Link>
         {displayNavMenu}
       </div>

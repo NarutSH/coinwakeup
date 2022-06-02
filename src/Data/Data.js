@@ -4,6 +4,7 @@ const menuData = [
     label: "Cryptocurrencies",
     pathUrl: "",
     subMenu: [
+      { label: "Crypto Market", pathUrl: "" },
       { label: "Recently added", pathUrl: "/recently_added" },
       { label: "Large Move", pathUrl: "/large_move" },
     ],
@@ -13,21 +14,21 @@ const menuData = [
     label: "Exchange",
     pathUrl: "/exchange",
     subMenu: [
-      { label: "Spot", pathUrl: "/spot" },
+      { label: "Spot", pathUrl: "" },
       { label: "Dex", pathUrl: "/dex" },
       { label: "Delivatives", pathUrl: "/delivatives" },
     ],
   },
-  {
-    id: "menu_03",
-    label: "NFT",
-    pathUrl: "/nft",
-    subMenu: [
-      { label: "Related coin", pathUrl: "/related_coin" },
-      { label: "Top Sales", pathUrl: "/top_sales" },
-      { label: "Market Place", pathUrl: "/market_place" },
-    ],
-  },
+  // {
+  //   id: "menu_03",
+  //   label: "NFT",
+  //   pathUrl: "/nft",
+  //   subMenu: [
+  //     { label: "Related coin", pathUrl: "/related_coin" },
+  //     { label: "Top Sales", pathUrl: "/top_sales" },
+  //     { label: "Market Place", pathUrl: "/market_place" },
+  //   ],
+  // },
   {
     id: "menu_04",
     label: "Knowledge",

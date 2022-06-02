@@ -38,7 +38,7 @@ const Exchange = () => {
   }, []);
 
   const displayExchanges = (
-    <div className="row mx-auto g-4">
+    <div className="row row-cols-1 row-cols-md-auto mx-auto g-4">
       {exchanges?.map((item) => {
         return (
           <div className="col ">

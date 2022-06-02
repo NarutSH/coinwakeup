@@ -6,8 +6,6 @@ import KnowledgeBlog from "../../Elements/KnowledgeBlog";
 const Knowledge = () => {
   return (
     <div className="container">
-      <div>Knowledge</div>
-
       <KnowledgeBlog
         title="Crypto Basics"
         description="New to Crypto ? Not for long -- start with these guide and explain"
